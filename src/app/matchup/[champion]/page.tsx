@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useT } from '@/lib/useT';
 import { Champion, MatchupResult, Role, RankTier, ROLES, RANK_TIERS } from '@/lib/types';
 import { getChampionIconUrl } from '@/lib/data-dragon';
@@ -235,6 +236,13 @@ export default function MatchupPage() {
 										>
 											✏
 										</button>
+										<Link
+											href={`/tips/${championId}/${m.opponent.id}`}
+											className="tips-row-btn"
+											title={t('matchup.tipsBtn')}
+										>
+											{t('matchup.tipsBtn')}
+										</Link>
 									</div>
 									{isOpen && (
 										<div className="memo-editor">

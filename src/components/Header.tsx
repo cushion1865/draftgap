@@ -1,14 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useT } from '@/lib/useT';
 import { useLocale } from '@/app/ClientLayout';
+import { useAuth } from '@/app/ClientLayout';
 
 export default function Header() {
 	const pathname = usePathname();
+	const router = useRouter();
 	const t = useT();
 	const { locale, setLocale } = useLocale();
+	const { user, username, signOut } = useAuth();
+
+	async function handleSignOut() {
+		await signOut();
+		router.push('/');
+		router.refresh();
+	}
 
 	return (
 		<header className="header">
@@ -44,6 +53,18 @@ export default function Header() {
 							日本語
 						</button>
 					</div>
+					{user ? (
+						<div className="header-user">
+							<span className="header-username">{username ?? user.email}</span>
+							<button className="header-signout-btn" onClick={handleSignOut}>
+								{t('auth.signOut')}
+							</button>
+						</div>
+					) : (
+						<Link href="/auth/login" className="header-login-btn">
+							{t('auth.loginBtn')}
+						</Link>
+					)}
 				</div>
 			</div>
 		</header>

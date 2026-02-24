@@ -25,7 +25,8 @@
     "poolBadge": "★ プール",
     "memoPlaceholder": "このマッチアップのメモを入力...",
     "memoSaved": "保存済み",
-    "memoDelete": "削除"
+    "memoDelete": "削除",
+    "tipsBtn": "Tips"
   },
   "pool": {
     "title": "マイチャンピオンプール",
@@ -49,5 +50,44 @@
     "mid": "ミッド",
     "bottom": "ボトム",
     "support": "サポート"
+  },
+  "auth": {
+    "loginTitle": "ログイン",
+    "signupTitle": "アカウント作成",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "username": "ユーザー名",
+    "usernameHint": "2〜20文字、英数字・アンダースコア・漢字・かなが使用可能",
+    "usernameTaken": "このユーザー名はすでに使われています",
+    "signupError": "登録に失敗しました。もう一度お試しください。",
+    "invalidCredentials": "メールアドレスまたはパスワードが正しくありません",
+    "loginBtn": "ログイン",
+    "signupBtn": "登録する",
+    "signOut": "ログアウト",
+    "googleLogin": "Googleでログイン",
+    "googleSignup": "Googleで登録",
+    "or": "または",
+    "noAccount": "アカウントをお持ちでない方は",
+    "hasAccount": "すでにアカウントをお持ちの方は",
+    "loginLink": "ログイン",
+    "signupLink": "新規登録"
+  },
+  "tips": {
+    "pageTitle": "コミュニティTips",
+    "placeholder": "このマッチアップのTipsを共有しましょう（10〜500文字）...",
+    "post": "投稿",
+    "postError": "投稿に失敗しました。もう一度お試しください。",
+    "loginPrompt": "Tipsを投稿するにはログインしてください。",
+    "loading": "Tips読み込み中...",
+    "empty": "まだTipsがありません。最初に投稿してみましょう！",
+    "like": "いいね",
+    "save": "保存",
+    "delete": "削除",
+    "confirmDelete": "このTipsを削除しますか？",
+    "sort": {
+      "likes": "人気順",
+      "newest": "新着順",
+      "saved": "保存済み"
+    }
   }
 }

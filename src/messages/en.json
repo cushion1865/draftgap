@@ -25,7 +25,8 @@
     "poolBadge": "★ Pool",
     "memoPlaceholder": "Add your notes for this matchup...",
     "memoSaved": "Saved",
-    "memoDelete": "Delete"
+    "memoDelete": "Delete",
+    "tipsBtn": "Tips"
   },
   "pool": {
     "title": "My Champion Pool",
@@ -49,5 +50,44 @@
     "mid": "Mid",
     "bottom": "Bottom",
     "support": "Support"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "signupTitle": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "usernameHint": "2–20 characters, letters, numbers, underscores, kanji/kana allowed",
+    "usernameTaken": "This username is already taken",
+    "signupError": "Sign up failed. Please try again.",
+    "invalidCredentials": "Invalid email or password",
+    "loginBtn": "Login",
+    "signupBtn": "Sign Up",
+    "signOut": "Sign Out",
+    "googleLogin": "Continue with Google",
+    "googleSignup": "Sign up with Google",
+    "or": "or",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Login",
+    "signupLink": "Sign Up"
+  },
+  "tips": {
+    "pageTitle": "Community Tips",
+    "placeholder": "Share your matchup tips (10–500 characters)...",
+    "post": "Post",
+    "postError": "Failed to post. Please try again.",
+    "loginPrompt": "Login to post your own tips.",
+    "loading": "Loading tips...",
+    "empty": "No tips yet. Be the first to share!",
+    "like": "Like",
+    "save": "Save",
+    "delete": "Delete",
+    "confirmDelete": "Delete this tip?",
+    "sort": {
+      "likes": "Top",
+      "newest": "New",
+      "saved": "Saved"
+    }
   }
 }
