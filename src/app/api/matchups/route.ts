@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
 		const role = (searchParams.get('role') || 'top') as Role;
 		const rankTier = (searchParams.get('rank') || 'all') as RankTier;
 		const poolParam = searchParams.get('pool');
+		const patch = searchParams.get('patch') || undefined;
 
 		if (!championId) {
 			return NextResponse.json({ error: 'champion parameter is required' }, { status: 400 });
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
 		const poolFilter = poolParam ? poolParam.split(',').filter(Boolean) : undefined;
 
 		// Get matchup data from DB
-		const dbResults = getMatchups(championId, role, rankTier, poolFilter);
+		const dbResults = getMatchups(championId, role, rankTier, poolFilter, patch);
 
 		// Get champion data for display
 		const champions = await fetchAllChampions('en_US');

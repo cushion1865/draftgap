@@ -43,6 +43,10 @@
     "range": "範囲",
     "individual": "個別"
   },
+  "patch": {
+    "label": "パッチ:",
+    "all": "全パッチ"
+  },
   "roles": {
     "all": "全ロール",
     "top": "トップ",

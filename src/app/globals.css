@@ -411,6 +411,110 @@ button {
   margin-top: 2px;
 }
 
+/* ===== PATCH SELECTOR ===== */
+.patch-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.patch-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.patch-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  min-width: 110px;
+}
+
+.patch-selector-btn:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-accent);
+}
+
+.patch-selector-btn.open {
+  border-color: var(--accent-gold);
+  background: rgba(200, 170, 110, 0.1);
+  color: var(--accent-gold);
+}
+
+.patch-selector-arrow {
+  font-size: 0.65rem;
+  opacity: 0.6;
+  margin-left: auto;
+}
+
+.patch-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 300;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  min-width: 180px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.patch-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.patch-option:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+.patch-option.active {
+  background: rgba(200, 170, 110, 0.12);
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.patch-games {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
 /* ===== CHAMPION GRID ===== */
 .champion-grid {
   display: grid;
@@ -1037,6 +1141,21 @@ button {
     justify-content: space-between;
   }
   .matchup-controls .rank-dropdown {
+    left: 0;
+    right: 0;
+    width: auto;
+    min-width: unset;
+  }
+
+  /* PatchSelector inside matchup-controls: fill full width */
+  .matchup-controls .patch-selector {
+    width: 100%;
+  }
+  .matchup-controls .patch-selector-btn {
+    flex: 1;
+    justify-content: space-between;
+  }
+  .matchup-controls .patch-dropdown {
     left: 0;
     right: 0;
     width: auto;

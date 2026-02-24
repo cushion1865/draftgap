@@ -5,11 +5,12 @@
  *   npx tsx src/scripts/collect-data.ts [options]
  *
  * Options (via environment or inline):
- *   --tier      Tier to collect (default: "GOLD")
- *   --division  Division within tier (default: "I")
- *   --pages     Number of league pages to fetch (default: 1, each ~200 players)
- *   --matches   Number of recent matches per player (default: 5)
- *   --apex      Collect from master+ instead of tier/division
+ *   --tier        Tier to collect (default: "GOLD")
+ *   --division    Division within tier (default: "I")
+ *   --pages       Number of league pages to fetch (default: 1, each ~200 players)
+ *   --start-page  First page to fetch (default: 1). Use >1 to sample mid-LP players.
+ *   --matches     Number of recent matches per player (default: 5)
+ *   --apex        Collect from master+ instead of tier/division
  */
 
 import {
@@ -22,6 +23,7 @@ import {
 } from '../lib/riot-api';
 
 import { upsertMatchup, isMatchProcessed, markMatchProcessed, getDb } from '../lib/db';
+import { fetchAllChampions } from '../lib/data-dragon';
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -38,6 +40,7 @@ function getArg(name: string, defaultValue: string): string {
 const TIER = getArg('tier', 'GOLD').toUpperCase();
 const DIVISION = getArg('division', 'I').toUpperCase();
 const PAGES = parseInt(getArg('pages', '1'), 10);
+const START_PAGE = parseInt(getArg('start-page', '1'), 10);
 const MATCHES_PER_PLAYER = parseInt(getArg('matches', '5'), 10);
 const IS_APEX = process.argv.includes('--apex');
 
@@ -72,6 +75,21 @@ async function collectData() {
 	// Ensure DB is initialized
 	getDb();
 
+	// Build Data Dragon normalization map (lowercase → canonical ID)
+	// Riot Match API の championName は Data Dragon ID と大文字化が異なる場合がある
+	console.log('📚 Building champion ID normalization map from Data Dragon...');
+	const champData = await fetchAllChampions('en_US');
+	const champNormMap = new Map<string, string>();
+	for (const champ of champData) {
+		champNormMap.set(champ.id.toLowerCase(), champ.id);
+	}
+	console.log(`✅ Loaded ${champNormMap.size} champion IDs`);
+	console.log('');
+
+	function normalizeChampId(name: string): string {
+		return champNormMap.get(name.toLowerCase()) ?? name;
+	}
+
 	// Step 1: Get player list (reuse the entries we already fetched for validation)
 	console.log(`📋 Fetching players: ${IS_APEX ? 'Master+' : `${TIER} ${DIVISION}`}`);
 	let entries: LeagueEntry[] = [];
@@ -83,7 +101,8 @@ async function collectData() {
 			entries.push(...e);
 		}
 	} else {
-		for (let page = 1; page <= PAGES; page++) {
+		console.log(`   start-page: ${START_PAGE}, pages: ${PAGES}`);
+		for (let page = START_PAGE; page < START_PAGE + PAGES; page++) {
 			const e = await getLeagueEntries(TIER, DIVISION, page);
 			console.log(`   Page ${page}: ${e.length} players`);
 			if (e.length === 0) break;
@@ -155,8 +174,8 @@ async function collectData() {
 
 			for (const mu of matchups) {
 				upsertMatchup({
-					championId: mu.championId,
-					opponentId: mu.opponentId,
+					championId: normalizeChampId(mu.championId),
+					opponentId: normalizeChampId(mu.opponentId),
 					role: mu.role,
 					rankTier,
 					wins: mu.won ? 1 : 0,

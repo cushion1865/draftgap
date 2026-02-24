@@ -69,12 +69,13 @@ export function getMatchups(
 	championId: string,
 	role: Role,
 	rankTier: RankTier,
-	poolFilter?: string[]
+	poolFilter?: string[],
+	patch?: string
 ): MatchupQueryResult[] {
 	const db = getDb();
 
 	let query = `
-    SELECT 
+    SELECT
       opponent_id,
       SUM(wins) as wins,
       SUM(games) as games,
@@ -93,6 +94,11 @@ export function getMatchups(
 		params.push(...tiers);
 	}
 
+	if (patch) {
+		query += ` AND patch = ?`;
+		params.push(patch);
+	}
+
 	if (poolFilter && poolFilter.length > 0) {
 		const placeholders = poolFilter.map(() => '?').join(',');
 		query += ` AND opponent_id IN (${placeholders})`;
@@ -106,6 +112,21 @@ export function getMatchups(
   `;
 
 	return db.prepare(query).all(...params) as MatchupQueryResult[];
+}
+
+export interface PatchInfo {
+	patch: string;
+	games: number;
+}
+
+export function getAvailablePatches(): PatchInfo[] {
+	const db = getDb();
+	return db.prepare(`
+    SELECT patch, SUM(games) as games
+    FROM matchups
+    GROUP BY patch
+    ORDER BY patch DESC
+  `).all() as PatchInfo[];
 }
 
 export function getPrimaryRoles(): { champion_id: string; role: string }[] {

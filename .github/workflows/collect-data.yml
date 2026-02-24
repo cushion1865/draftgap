@@ -33,55 +33,68 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ── サンプリング開始ページを決定 ──────────────────────────────────────
+      # 朝 (02:00 JST = 0 17 UTC): page 1  → 高LP帯（上位200名）
+      # 昼 (14:00 JST = 0 5 UTC):  page 5  → 中LP帯（各ディビジョンの中盤）
+      - name: Set start page
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 5 * * *" ]; then
+            echo "START_PAGE=5" >> $GITHUB_ENV
+            echo "Afternoon run: sampling from page 5 (mid-LP players)"
+          else
+            echo "START_PAGE=1" >> $GITHUB_ENV
+            echo "Morning run: sampling from page 1 (high-LP players)"
+          fi
+
       # ── Silver ────────────────────────────────────────────────────────────
       - name: Silver I
-        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division I --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division I --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Silver II
-        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division II --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division II --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Silver III
-        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division III --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division III --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Silver IV
-        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division IV --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division IV --pages 1 --start-page $START_PAGE --matches $MATCHES
 
       # ── Gold ──────────────────────────────────────────────────────────────
       - name: Gold I
-        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages 2 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages 2 --start-page $START_PAGE --matches $MATCHES
       - name: Gold II
-        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division II --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division II --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Gold III
-        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division III --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division III --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Gold IV
-        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division IV --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division IV --pages 1 --start-page $START_PAGE --matches $MATCHES
 
       # ── Platinum ──────────────────────────────────────────────────────────
       - name: Platinum I
-        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Platinum II
-        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division II --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division II --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Platinum III
-        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division III --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division III --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Platinum IV
-        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division IV --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division IV --pages 1 --start-page $START_PAGE --matches $MATCHES
 
       # ── Emerald ───────────────────────────────────────────────────────────
       - name: Emerald I
-        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Emerald II
-        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division II --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division II --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Emerald III
-        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division III --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division III --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Emerald IV
-        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division IV --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division IV --pages 1 --start-page $START_PAGE --matches $MATCHES
 
       # ── Diamond ───────────────────────────────────────────────────────────
       - name: Diamond I
-        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division I --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division I --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Diamond II
-        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division II --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division II --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Diamond III
-        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division III --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division III --pages 1 --start-page $START_PAGE --matches $MATCHES
       - name: Diamond IV
-        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division IV --pages 1 --matches $MATCHES
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division IV --pages 1 --start-page $START_PAGE --matches $MATCHES
 
       # ── Master / Grandmaster / Challenger ─────────────────────────────────
       - name: Master+

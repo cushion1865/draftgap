@@ -43,6 +43,10 @@
     "range": "Range",
     "individual": "Individual"
   },
+  "patch": {
+    "label": "Patch:",
+    "all": "All Patches"
+  },
   "roles": {
     "all": "All",
     "top": "Top",

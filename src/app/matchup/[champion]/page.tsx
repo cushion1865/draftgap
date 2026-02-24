@@ -10,6 +10,7 @@ import { getPoolChampionIds } from '@/lib/champion-pool';
 import { getAllMemos, setMemo, getMemoKey } from '@/lib/matchup-memos';
 import Header from '@/components/Header';
 import RankSelector from '@/components/RankSelector';
+import PatchSelector, { PatchInfo } from '@/components/PatchSelector';
 import RoleIcon from '@/components/RoleIcon';
 
 function getWinRateColor(winRate: number): string {
@@ -32,6 +33,9 @@ export default function MatchupPage() {
 
 	const [role, setRole] = useState<Role>(initialRole);
 	const [rank, setRank] = useState<RankTier>(initialRank);
+	// null = パッチ一覧ロード中（fetchMatchups を待機）、'' = 全パッチ、'15.x' = 特定パッチ
+	const [patch, setPatch] = useState<string | null>(null);
+	const [patches, setPatches] = useState<PatchInfo[]>([]);
 	const [poolFilterActive, setPoolFilterActive] = useState(false);
 	const [champion, setChampion] = useState<Champion | null>(null);
 	const [matchups, setMatchups] = useState<MatchupResult[]>([]);
@@ -46,13 +50,31 @@ export default function MatchupPage() {
 	useEffect(() => {
 		setPoolIds(getPoolChampionIds());
 		setMemos(getAllMemos());
+		// 利用可能なパッチ一覧を取得し、最新パッチを自動選択
+		fetch('/api/patches')
+			.then(res => res.json())
+			.then(data => {
+				const patchList: PatchInfo[] = data.patches ?? [];
+				setPatches(patchList);
+				// 最新パッチ（DESC順の先頭）をデフォルト選択、なければ全パッチ
+				setPatch(patchList.length > 0 ? patchList[0].patch : '');
+			})
+			.catch(err => {
+				console.error('Failed to fetch patches:', err);
+				setPatch(''); // フェッチ失敗時は全パッチ表示にフォールバック
+			});
 	}, []);
 
 	const fetchMatchups = useCallback(async () => {
+		// patch が null の間はパッチ一覧のロード待ち → スキップ
+		if (patch === null) return;
 		setLoading(true);
 		setError(null);
 		try {
 			let url = `/api/matchups?champion=${encodeURIComponent(championId)}&role=${encodeURIComponent(role)}&rank=${encodeURIComponent(rank)}`;
+			if (patch) {
+				url += `&patch=${encodeURIComponent(patch)}`;
+			}
 			if (poolFilterActive && poolIds.length > 0) {
 				url += `&pool=${poolIds.join(',')}`;
 			}
@@ -71,7 +93,7 @@ export default function MatchupPage() {
 		} finally {
 			setLoading(false);
 		}
-	}, [championId, role, rank, poolFilterActive, poolIds]);
+	}, [championId, role, rank, patch, poolFilterActive, poolIds]);
 
 	useEffect(() => {
 		fetchMatchups();
@@ -148,6 +170,10 @@ export default function MatchupPage() {
 					</div>
 
 					<RankSelector value={rank} onChange={setRank} />
+
+					{patches.length > 0 && (
+						<PatchSelector value={patch ?? ''} patches={patches} onChange={setPatch} />
+					)}
 
 					<button
 						className={`pool-toggle ${poolFilterActive ? 'active' : ''}`}
