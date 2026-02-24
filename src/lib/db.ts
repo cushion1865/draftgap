@@ -121,12 +121,19 @@ export interface PatchInfo {
 
 export function getAvailablePatches(): PatchInfo[] {
 	const db = getDb();
-	return db.prepare(`
+	const rows = db.prepare(`
     SELECT patch, SUM(games) as games
     FROM matchups
     GROUP BY patch
-    ORDER BY patch DESC
   `).all() as PatchInfo[];
+
+	// セマンティックバージョン降順ソート（"16.10" > "16.9" を正しく処理）
+	return rows.sort((a, b) => {
+		const [aMaj, aMin] = a.patch.split('.').map(Number);
+		const [bMaj, bMin] = b.patch.split('.').map(Number);
+		if (aMaj !== bMaj) return bMaj - aMaj;
+		return bMin - aMin;
+	});
 }
 
 export function getPrimaryRoles(): { champion_id: string; role: string }[] {

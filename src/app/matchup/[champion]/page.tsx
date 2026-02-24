@@ -56,8 +56,11 @@ export default function MatchupPage() {
 			.then(data => {
 				const patchList: PatchInfo[] = data.patches ?? [];
 				setPatches(patchList);
-				// 最新パッチ（DESC順の先頭）をデフォルト選択
-				if (patchList.length > 0) setPatch(patchList[0].patch);
+				// データが十分にある最新パッチを自動選択（閾値: 1000 games）
+				// 閾値未満のパッチしかない場合は全パッチ表示のまま
+				const MIN_GAMES = 1000;
+				const autoSelect = patchList.find(p => p.games >= MIN_GAMES);
+				if (autoSelect) setPatch(autoSelect.patch);
 			})
 			.catch(err => {
 				console.error('Failed to fetch patches:', err);
