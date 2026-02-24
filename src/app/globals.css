@@ -460,6 +460,21 @@ button {
   text-overflow: ellipsis;
 }
 
+.champion-card-role {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(200, 170, 110, 0.3);
+  border-radius: 4px;
+  font-size: 0.5rem;
+  padding: 1px 3px;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--accent-gold-light);
+  pointer-events: none;
+}
+
 /* ===== MATCHUP PAGE ===== */
 .matchup-header {
   display: flex;

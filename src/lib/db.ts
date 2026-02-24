@@ -108,6 +108,20 @@ export function getMatchups(
 	return db.prepare(query).all(...params) as MatchupQueryResult[];
 }
 
+export function getPrimaryRoles(): { champion_id: string; role: string }[] {
+	const db = getDb();
+	return db.prepare(`
+    SELECT champion_id, role
+    FROM (
+      SELECT champion_id, role, SUM(games) as total_games,
+             ROW_NUMBER() OVER (PARTITION BY champion_id ORDER BY SUM(games) DESC) as rn
+      FROM matchups
+      GROUP BY champion_id, role
+    )
+    WHERE rn = 1
+  `).all() as { champion_id: string; role: string }[];
+}
+
 export function upsertMatchup(data: {
 	championId: string;
 	opponentId: string;
