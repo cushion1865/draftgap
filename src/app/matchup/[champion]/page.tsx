@@ -6,6 +6,7 @@ import { useT } from '@/lib/useT';
 import { Champion, MatchupResult, Role, RankTier, ROLES, RANK_TIERS } from '@/lib/types';
 import { getChampionIconUrl } from '@/lib/data-dragon';
 import { getPoolChampionIds } from '@/lib/champion-pool';
+import { getAllMemos, setMemo, getMemoKey } from '@/lib/matchup-memos';
 import Header from '@/components/Header';
 import RankSelector from '@/components/RankSelector';
 import RoleIcon from '@/components/RoleIcon';
@@ -24,7 +25,6 @@ export default function MatchupPage() {
 
 	const championId = params.champion as string;
 	const initialRole = (searchParams.get('role') || 'top') as Role;
-	// Validate rank from URL: '+' in query strings decodes as space, so validate the value
 	const rawRank = searchParams.get('rank') || 'all';
 	const validRankValues = RANK_TIERS.map(t => t.value);
 	const initialRank = (validRankValues.includes(rawRank as RankTier) ? rawRank : 'all') as RankTier;
@@ -38,8 +38,13 @@ export default function MatchupPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [poolIds, setPoolIds] = useState<string[]>([]);
 
+	// Memo state
+	const [memos, setMemos] = useState<Record<string, string>>({});
+	const [openMemoId, setOpenMemoId] = useState<string | null>(null);
+
 	useEffect(() => {
 		setPoolIds(getPoolChampionIds());
+		setMemos(getAllMemos());
 	}, []);
 
 	const fetchMatchups = useCallback(async () => {
@@ -54,8 +59,6 @@ export default function MatchupPage() {
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
 			const data = await res.json();
 			setChampion(data.champion);
-
-			// Mark pool champions
 			const results = data.matchups.map((m: MatchupResult) => ({
 				...m,
 				isInPool: poolIds.includes(m.opponent.id),
@@ -72,6 +75,16 @@ export default function MatchupPage() {
 	useEffect(() => {
 		fetchMatchups();
 	}, [fetchMatchups]);
+
+	function handleMemoChange(opponentId: string, text: string) {
+		setMemo(championId, opponentId, text);
+		const k = getMemoKey(championId, opponentId);
+		setMemos(prev => ({ ...prev, [k]: text }));
+	}
+
+	function toggleMemo(opponentId: string) {
+		setOpenMemoId(prev => prev === opponentId ? null : opponentId);
+	}
 
 	const emptyPoolActive = poolFilterActive && poolIds.length === 0;
 
@@ -184,35 +197,68 @@ export default function MatchupPage() {
 						{matchups.map((m, i) => {
 							const winPercent = (m.winRate * 100).toFixed(1);
 							const barColor = getWinRateColor(m.winRate);
+							const memoKey = getMemoKey(championId, m.opponent.id);
+							const memoText = memos[memoKey] ?? '';
+							const hasMemo = memoText.trim() !== '';
+							const isOpen = openMemoId === m.opponent.id;
 							return (
-								<div
-									key={m.opponent.id || i}
-									className={`matchup-row ${m.isInPool ? 'pool-highlight' : ''}`}
-								>
-									<div className="matchup-row-icon">
-										<img
-											src={getChampionIconUrl(m.opponent.image)}
-											alt={m.opponent.name}
-											loading="lazy"
-										/>
+								<div key={m.opponent.id || i} className="matchup-item">
+									<div className={`matchup-row ${m.isInPool ? 'pool-highlight' : ''}`}>
+										<div className="matchup-row-icon">
+											<img
+												src={getChampionIconUrl(m.opponent.image)}
+												alt={m.opponent.name}
+												loading="lazy"
+											/>
+										</div>
+										<div className="matchup-row-name">
+											{m.opponent.name}
+											{m.isInPool && <span className="matchup-row-badge">{t('matchup.poolBadge')}</span>}
+										</div>
+										<div className="matchup-row-winrate">
+											<div
+												className="matchup-row-winrate-bar"
+												style={{
+													width: `${Math.max(m.winRate * 100, 20)}%`,
+													background: barColor,
+												}}
+											/>
+											<div className="matchup-row-winrate-text">{winPercent}%</div>
+										</div>
+										<div className="matchup-row-games">
+											{t('matchup.games', { count: m.games.toLocaleString() })}
+										</div>
+										<button
+											className={`memo-btn ${hasMemo ? 'has-memo' : ''} ${isOpen ? 'open' : ''}`}
+											onClick={() => toggleMemo(m.opponent.id)}
+											title={hasMemo ? t('matchup.memoSaved') : t('matchup.memoPlaceholder')}
+										>
+											✏
+										</button>
 									</div>
-									<div className="matchup-row-name">
-										{m.opponent.name}
-										{m.isInPool && <span className="matchup-row-badge">{t('matchup.poolBadge')}</span>}
-									</div>
-									<div className="matchup-row-winrate">
-										<div
-											className="matchup-row-winrate-bar"
-											style={{
-												width: `${Math.max(m.winRate * 100, 20)}%`,
-												background: barColor,
-											}}
-										/>
-										<div className="matchup-row-winrate-text">{winPercent}%</div>
-									</div>
-									<div className="matchup-row-games">
-										{t('matchup.games', { count: m.games.toLocaleString() })}
-									</div>
+									{isOpen && (
+										<div className="memo-editor">
+											<textarea
+												className="memo-textarea"
+												placeholder={t('matchup.memoPlaceholder')}
+												value={memoText}
+												onChange={e => handleMemoChange(m.opponent.id, e.target.value)}
+												maxLength={300}
+												autoFocus
+											/>
+											<div className="memo-footer">
+												<span className="memo-char-count">{memoText.length} / 300</span>
+												{hasMemo && (
+													<button
+														className="memo-delete-btn"
+														onClick={() => handleMemoChange(m.opponent.id, '')}
+													>
+														{t('matchup.memoDelete')}
+													</button>
+												)}
+											</div>
+										</div>
+									)}
 								</div>
 							);
 						})}

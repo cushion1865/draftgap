@@ -22,7 +22,10 @@
     "noMatchupsPool": "No matchups found in your champion pool for this role. Try a different role or add more champions to your pool.",
     "noMatchups": "No matchup data available for this champion and role.",
     "games": "{count} games",
-    "poolBadge": "★ Pool"
+    "poolBadge": "★ Pool",
+    "memoPlaceholder": "Add your notes for this matchup...",
+    "memoSaved": "Saved",
+    "memoDelete": "Delete"
   },
   "pool": {
     "title": "My Champion Pool",

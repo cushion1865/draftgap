@@ -620,9 +620,14 @@ button {
   gap: 6px;
 }
 
+.matchup-item {
+  display: flex;
+  flex-direction: column;
+}
+
 .matchup-row {
   display: grid;
-  grid-template-columns: 48px 1fr 100px 80px;
+  grid-template-columns: 48px 1fr 100px 80px 36px;
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
@@ -705,6 +710,107 @@ button {
   font-size: 0.8rem;
   color: var(--text-muted);
   text-align: right;
+}
+
+/* ===== MEMO ===== */
+.memo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  justify-self: center;
+}
+
+.memo-btn:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.memo-btn.has-memo {
+  color: var(--accent-gold);
+  border-color: rgba(200, 170, 110, 0.3);
+  background: rgba(200, 170, 110, 0.08);
+}
+
+.memo-btn.open {
+  background: rgba(200, 170, 110, 0.12);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.memo-editor {
+  padding: 10px 12px 10px 72px;
+  background: rgba(200, 170, 110, 0.04);
+  border: 1px solid rgba(200, 170, 110, 0.15);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  animation: memo-expand 0.15s ease;
+}
+
+@keyframes memo-expand {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.memo-textarea {
+  width: 100%;
+  min-height: 72px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: inherit;
+  line-height: 1.5;
+  padding: 8px 12px;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.memo-textarea:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(200, 170, 110, 0.1);
+}
+
+.memo-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.memo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.memo-char-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.memo-delete-btn {
+  font-size: 0.72rem;
+  color: var(--win-low);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background var(--transition-fast);
+}
+
+.memo-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
 }
 
 /* ===== CHAMPION POOL PAGE ===== */
@@ -908,9 +1014,13 @@ button {
   }
 
   .matchup-row {
-    grid-template-columns: 40px 1fr 80px 60px;
+    grid-template-columns: 40px 1fr 80px 60px 32px;
     gap: 8px;
     padding: 8px 12px;
+  }
+
+  .memo-editor {
+    padding: 10px 12px;
   }
 
   .matchup-controls {
@@ -995,7 +1105,7 @@ button {
   }
 
   .matchup-row {
-    grid-template-columns: 36px 1fr 70px;
+    grid-template-columns: 36px 1fr 70px 32px;
   }
 
   .matchup-row-games {

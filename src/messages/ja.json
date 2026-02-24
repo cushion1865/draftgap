@@ -22,7 +22,10 @@
     "noMatchupsPool": "このロールでのマイプール内マッチアップが見つかりません。別のロールを選ぶかプールにチャンピオンを追加してください。",
     "noMatchups": "このチャンピオンとロールのマッチアップデータがありません。",
     "games": "{count} ゲーム",
-    "poolBadge": "★ プール"
+    "poolBadge": "★ プール",
+    "memoPlaceholder": "このマッチアップのメモを入力...",
+    "memoSaved": "保存済み",
+    "memoDelete": "削除"
   },
   "pool": {
     "title": "マイチャンピオンプール",
