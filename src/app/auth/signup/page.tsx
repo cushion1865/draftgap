@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useT } from '@/lib/useT';
+import { useAuth } from '@/app/ClientLayout';
 import Header from '@/components/Header';
 
 export default function SignupPage() {
 	const router = useRouter();
 	const t = useT();
+	const { refreshUsername } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
@@ -55,8 +57,9 @@ export default function SignupPage() {
 			return;
 		}
 
+		// profile作成後にusernameを明示的に再取得してからページ遷移
+		await refreshUsername();
 		router.push('/');
-		router.refresh();
 		setLoading(false);
 	}
 
