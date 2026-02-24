@@ -1,6 +1,6 @@
 import { ChampionPoolEntry, Role } from './types';
 
-const STORAGE_KEY = 'draftgap-champion-pool';
+const STORAGE_KEY = 'riftedge-champion-pool';
 
 export function getChampionPool(): ChampionPoolEntry[] {
 	if (typeof window === 'undefined') return [];

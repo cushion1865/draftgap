@@ -15,7 +15,7 @@ export default function Header() {
 			<div className="header-inner">
 				<Link href="/" className="header-logo">
 					<span className="header-logo-icon">⚔️</span>
-					<span className="header-logo-text">DraftGap</span>
+					<span className="header-logo-text">RiftEdge</span>
 				</Link>
 				<div className="header-actions">
 					<Link

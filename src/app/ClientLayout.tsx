@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 export type Locale = 'en' | 'ja';
 
-const STORAGE_KEY = 'draftgap-locale';
+const STORAGE_KEY = 'riftedge-locale';
 
 interface LocaleCtx {
 	locale: Locale;
