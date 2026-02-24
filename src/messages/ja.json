@@ -83,7 +83,12 @@
     "like": "いいね",
     "save": "保存",
     "delete": "削除",
+    "edit": "編集",
+    "editSave": "保存する",
+    "editCancel": "キャンセル",
     "confirmDelete": "このTipsを削除しますか？",
+    "tipLimitReached": "1マッチアップにつき投稿は3件までです。",
+    "cooldown": "次の投稿まで5分お待ちください。",
     "sort": {
       "likes": "人気順",
       "newest": "新着順",

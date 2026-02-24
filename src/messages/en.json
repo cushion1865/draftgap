@@ -83,7 +83,12 @@
     "like": "Like",
     "save": "Save",
     "delete": "Delete",
+    "edit": "Edit",
+    "editSave": "Save",
+    "editCancel": "Cancel",
     "confirmDelete": "Delete this tip?",
+    "tipLimitReached": "You can post up to 3 tips per matchup.",
+    "cooldown": "Please wait 5 minutes before posting again.",
     "sort": {
       "likes": "Top",
       "newest": "New",

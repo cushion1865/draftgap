@@ -1615,13 +1615,15 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.tip-action-btn {
+/* いいねボタン: ハート形、アクティブ時に赤 */
+.tip-like-btn {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 10px;
+  padding: 5px 12px;
   border-radius: 100px;
   font-size: 0.78rem;
   font-weight: 600;
@@ -1632,43 +1634,96 @@ button {
   transition: all var(--transition-fast);
 }
 
-.tip-action-btn:hover:not(:disabled) {
-  background: var(--bg-glass-hover);
-  color: var(--text-primary);
+.tip-like-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
-.tip-action-btn:disabled {
-  opacity: 0.5;
+.tip-like-btn:disabled {
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-.tip-action-btn.active {
-  color: var(--win-high);
-  background: rgba(34, 197, 94, 0.1);
-  border-color: rgba(34, 197, 94, 0.35);
+.tip-like-btn.active {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
-.tip-action-btn.active.saved {
-  color: var(--accent-gold);
+/* 保存ボタン: ブックマーク形、テキストラベル付き、アクティブ時にゴールド */
+.tip-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tip-save-btn:hover:not(:disabled) {
   background: rgba(200, 170, 110, 0.1);
+  color: var(--accent-gold);
   border-color: rgba(200, 170, 110, 0.35);
 }
 
-.tip-action-icon {
-  font-size: 0.9rem;
-  line-height: 1;
+.tip-save-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tip-save-btn.active {
+  color: var(--accent-gold);
+  background: rgba(200, 170, 110, 0.15);
+  border-color: rgba(200, 170, 110, 0.45);
+}
+
+.tip-save-label {
+  font-size: 0.75rem;
 }
 
 .tip-action-count {
   font-size: 0.75rem;
+  opacity: 0.85;
 }
 
-.tip-delete-btn {
+/* 自分の投稿: 編集・削除ボタングループ */
+.tip-own-actions {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tip-edit-btn {
   padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--win-low);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tip-edit-btn:hover {
+  color: var(--accent-blue);
+  background: rgba(10, 200, 185, 0.08);
+  border-color: rgba(10, 200, 185, 0.25);
+}
+
+.tip-delete-btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 100px;
@@ -1677,6 +1732,75 @@ button {
 }
 
 .tip-delete-btn:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--win-low);
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+/* 編集エリア */
+.tip-edit-area {
+  margin-bottom: 12px;
+}
+
+.tip-edit-textarea {
+  width: 100%;
+  min-height: 90px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-gold);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  line-height: 1.5;
+  padding: 10px 14px;
+  resize: vertical;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(200, 170, 110, 0.1);
+}
+
+.tip-edit-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tip-char-count-sm {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-right: auto;
+}
+
+.tip-edit-cancel-btn {
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tip-edit-cancel-btn:hover:not(:disabled) {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+.tip-edit-save-btn {
+  padding: 5px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bg-primary);
+  background: var(--gradient-gold);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.tip-edit-save-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }

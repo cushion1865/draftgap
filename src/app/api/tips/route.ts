@@ -88,6 +88,32 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 	}
 
+	// スパム対策1: このマッチアップへの投稿は1ユーザー3件まで
+	const { count: tipCount } = await supabase
+		.from('matchup_tips')
+		.select('id', { count: 'exact', head: true })
+		.eq('user_id', user.id)
+		.eq('champion_id', champion_id)
+		.eq('opponent_id', opponent_id);
+
+	if (tipCount !== null && tipCount >= 3) {
+		return NextResponse.json({ error: 'tipLimitReached' }, { status: 429 });
+	}
+
+	// スパム対策2: 直近5分以内に投稿済みならブロック
+	const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+	const { data: recentTip } = await supabase
+		.from('matchup_tips')
+		.select('created_at')
+		.eq('user_id', user.id)
+		.gte('created_at', fiveMinAgo)
+		.limit(1)
+		.maybeSingle();
+
+	if (recentTip) {
+		return NextResponse.json({ error: 'cooldown' }, { status: 429 });
+	}
+
 	const { data, error } = await supabase
 		.from('matchup_tips')
 		.insert({ user_id: user.id, champion_id, opponent_id, content })

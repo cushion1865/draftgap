@@ -63,7 +63,11 @@ export default function TipsPage() {
 			});
 			const data = await res.json();
 			if (!res.ok) {
-				setPostError(data.error ?? t('tips.postError'));
+				// スパム系エラーは i18n キー経由で表示
+				const errKey = data.error === 'tipLimitReached' || data.error === 'cooldown'
+					? `tips.${data.error}`
+					: 'tips.postError';
+				setPostError(t(errKey));
 			} else {
 				setContent('');
 				setTips(prev => [data.tip, ...prev]);
