@@ -18,7 +18,6 @@ const ROLE_TAG_MAP: Record<string, string[]> = {
   support: ['Support', 'Mage', 'Tank'],
 };
 
-const ROLE_INFO = Object.fromEntries(ROLES.map(r => [r.value, r]));
 
 export default function HomePage() {
   const router = useRouter();
@@ -127,28 +126,21 @@ export default function HomePage() {
           </div>
         ) : (
           <div className="champion-grid">
-            {filteredChampions.map(champion => {
-              const primaryRole = primaryRoles[champion.id];
-              const roleInfo = primaryRole ? ROLE_INFO[primaryRole] : null;
-              return (
-                <div
-                  key={champion.id}
-                  className="champion-card"
-                  onClick={() => handleChampionClick(champion)}
-                  title={champion.name}
-                >
-                  <img
-                    src={getChampionIconUrl(champion.image)}
-                    alt={champion.name}
-                    loading="lazy"
-                  />
-                  <div className="champion-card-name">{champion.name}</div>
-                  {selectedRole === 'all' && roleInfo && (
-                    <div className="champion-card-role"><RoleIcon role={roleInfo.value} size={10} /> {t(`roles.${roleInfo.value}`)}</div>
-                  )}
-                </div>
-              );
-            })}
+            {filteredChampions.map(champion => (
+              <div
+                key={champion.id}
+                className="champion-card"
+                onClick={() => handleChampionClick(champion)}
+                title={champion.name}
+              >
+                <img
+                  src={getChampionIconUrl(champion.image)}
+                  alt={champion.name}
+                  loading="lazy"
+                />
+                <div className="champion-card-name">{champion.name}</div>
+              </div>
+            ))}
           </div>
         )}
 
