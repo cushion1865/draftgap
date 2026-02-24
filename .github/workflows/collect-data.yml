@@ -2,16 +2,23 @@ name: Collect Matchup Data
 
 on:
   schedule:
-    - cron: '0 17 * * *'  # 毎日 17:00 UTC = 翌 02:00 JST
+    - cron: '0 17 * * *'  # 毎日 02:00 JST（朝）
+    - cron: '0 5 * * *'   # 毎日 14:00 JST（昼）
   workflow_dispatch:       # GitHub UI から手動実行も可能
 
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 330   # 5.5時間上限（GitHub Actions の 6h 制限以内）
+    timeout-minutes: 330   # 5.5時間（GitHub Actions の 6h 上限以内）
 
     permissions:
-      contents: write      # DB コミットのため書き込み権限が必要
+      contents: write
+
+    env:
+      RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+      RIOT_REGION: jp1
+      RIOT_ROUTING: asia
+      MATCHES: 20          # 1プレイヤーあたり収集する直近試合数
 
     steps:
       - name: Checkout repository
@@ -26,63 +33,75 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ── データ収集 ────────────────────────────────────────────────────────
-      # 各ティアを順番に収集。duplicate はスキップされるので日々の増分のみ処理。
+      # ── Silver ────────────────────────────────────────────────────────────
+      - name: Silver I
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division I --pages 1 --matches $MATCHES
+      - name: Silver II
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division II --pages 1 --matches $MATCHES
+      - name: Silver III
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division III --pages 1 --matches $MATCHES
+      - name: Silver IV
+        run: npx tsx src/scripts/collect-data.ts --tier SILVER --division IV --pages 1 --matches $MATCHES
 
-      - name: Collect Gold I (2 pages ≈ 400 players)
-        env:
-          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
-          RIOT_REGION: jp1
-          RIOT_ROUTING: asia
-        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages 2 --matches 5
+      # ── Gold ──────────────────────────────────────────────────────────────
+      - name: Gold I
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages 2 --matches $MATCHES
+      - name: Gold II
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division II --pages 1 --matches $MATCHES
+      - name: Gold III
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division III --pages 1 --matches $MATCHES
+      - name: Gold IV
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division IV --pages 1 --matches $MATCHES
 
-      - name: Collect Platinum I (1 page ≈ 200 players)
-        env:
-          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
-          RIOT_REGION: jp1
-          RIOT_ROUTING: asia
-        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages 1 --matches 5
+      # ── Platinum ──────────────────────────────────────────────────────────
+      - name: Platinum I
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages 1 --matches $MATCHES
+      - name: Platinum II
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division II --pages 1 --matches $MATCHES
+      - name: Platinum III
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division III --pages 1 --matches $MATCHES
+      - name: Platinum IV
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division IV --pages 1 --matches $MATCHES
 
-      - name: Collect Emerald I (1 page ≈ 200 players)
-        env:
-          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
-          RIOT_REGION: jp1
-          RIOT_ROUTING: asia
-        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages 1 --matches 5
+      # ── Emerald ───────────────────────────────────────────────────────────
+      - name: Emerald I
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages 1 --matches $MATCHES
+      - name: Emerald II
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division II --pages 1 --matches $MATCHES
+      - name: Emerald III
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division III --pages 1 --matches $MATCHES
+      - name: Emerald IV
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division IV --pages 1 --matches $MATCHES
 
-      - name: Collect Diamond I (1 page ≈ 200 players)
-        env:
-          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
-          RIOT_REGION: jp1
-          RIOT_ROUTING: asia
-        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division I --pages 1 --matches 5
+      # ── Diamond ───────────────────────────────────────────────────────────
+      - name: Diamond I
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division I --pages 1 --matches $MATCHES
+      - name: Diamond II
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division II --pages 1 --matches $MATCHES
+      - name: Diamond III
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division III --pages 1 --matches $MATCHES
+      - name: Diamond IV
+        run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division IV --pages 1 --matches $MATCHES
 
-      - name: Collect Master+ (apex tiers)
-        env:
-          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
-          RIOT_REGION: jp1
-          RIOT_ROUTING: asia
-        run: npx tsx src/scripts/collect-data.ts --apex --matches 5
+      # ── Master / Grandmaster / Challenger ─────────────────────────────────
+      - name: Master+
+        run: npx tsx src/scripts/collect-data.ts --apex --matches $MATCHES
 
-      # ── WAL チェックポイント ───────────────────────────────────────────────
-      # better-sqlite3 は WAL モードで書き込むため、コミット前に確定させる
-
+      # ── WAL チェックポイント → コミット ────────────────────────────────────
       - name: Checkpoint WAL
         run: |
           if [ -f data/matchups.db-wal ]; then
             sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE);'
             echo "WAL checkpointed"
           else
-            echo "No WAL file, skipping"
+            echo "No WAL file"
           fi
-
-      # ── DB をコミット ──────────────────────────────────────────────────────
 
       - name: Commit updated database
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/matchups.db
-          git diff --staged --quiet && echo "No changes to commit" || \
-            git commit -m "chore: update matchup database [$(date -u '+%Y-%m-%d')]"
+          git diff --staged --quiet && echo "No changes" || \
+            git commit -m "chore: update matchup database [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git push
