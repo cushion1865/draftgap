@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# SQLite WAL files (should not exist after checkpoint, but just in case)
+data/*.db-shm
+data/*.db-wal

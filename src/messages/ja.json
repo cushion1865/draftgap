@@ -1,0 +1,50 @@
+{
+  "header": {
+    "counterPick": "カウンターピック",
+    "myPool": "マイプール"
+  },
+  "home": {
+    "title": "カウンターピックを探す",
+    "subtitle": "敵チャンピオンを選択して最適なカウンターを見つけましょう",
+    "searchPlaceholder": "チャンピオン検索...",
+    "allRoles": "全ロール",
+    "noChampions": "チャンピオンが見つかりません"
+  },
+  "matchup": {
+    "back": "← 戻る",
+    "vsTitle": "{name} へのカウンター",
+    "subtitle": "{role}レーンで {name} に対する最適なピック",
+    "myPoolOnly": "マイプールのみ",
+    "retry": "再試行",
+    "errorMessage": "データの読み込みに失敗しました。接続を確認して再度お試しください。",
+    "emptyPoolTitle": "マイプールが空です。",
+    "addToPool": "チャンピオンをマイプールに追加",
+    "noMatchupsPool": "このロールでのマイプール内マッチアップが見つかりません。別のロールを選ぶかプールにチャンピオンを追加してください。",
+    "noMatchups": "このチャンピオンとロールのマッチアップデータがありません。",
+    "games": "{count} ゲーム",
+    "poolBadge": "★ プール"
+  },
+  "pool": {
+    "title": "マイチャンピオンプール",
+    "subtitle": "プレイするチャンピオンを登録して個別のカウンター提案を受け取りましょう",
+    "count_one": "プールに {count} 体登録済み",
+    "count_other": "プールに {count} 体登録済み",
+    "emptyHint": "下のチャンピオンをクリックしてプールに追加",
+    "searchPlaceholder": "チャンピオン検索...",
+    "removeHint": "{name} を削除"
+  },
+  "rank": {
+    "label": "ランク:",
+    "all": "全ランク",
+    "range": "範囲",
+    "individual": "個別"
+  },
+  "roles": {
+    "all": "全ロール",
+    "top": "トップ",
+    "jungle": "ジャングル",
+    "mid": "ミッド",
+    "bottom": "ボトム",
+    "support": "サポート"
+  }
+}

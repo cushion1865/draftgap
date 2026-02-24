@@ -1,0 +1,50 @@
+{
+  "header": {
+    "counterPick": "Counter Pick",
+    "myPool": "My Pool"
+  },
+  "home": {
+    "title": "Find Your Counter Pick",
+    "subtitle": "Select the enemy champion to find your best matchup",
+    "searchPlaceholder": "Search champion...",
+    "allRoles": "All",
+    "noChampions": "No champions found"
+  },
+  "matchup": {
+    "back": "← Back",
+    "vsTitle": "vs {name}",
+    "subtitle": "Best counter picks for {name} in {role} lane",
+    "myPoolOnly": "My Pool Only",
+    "retry": "Retry",
+    "errorMessage": "Failed to load matchup data. Please check your connection and try again.",
+    "emptyPoolTitle": "Your champion pool is empty.",
+    "addToPool": "Add champions to My Pool",
+    "noMatchupsPool": "No matchups found in your champion pool for this role. Try a different role or add more champions to your pool.",
+    "noMatchups": "No matchup data available for this champion and role.",
+    "games": "{count} games",
+    "poolBadge": "★ Pool"
+  },
+  "pool": {
+    "title": "My Champion Pool",
+    "subtitle": "Select champions you play to get personalized counter pick recommendations",
+    "count_one": "{count} champion in your pool",
+    "count_other": "{count} champions in your pool",
+    "emptyHint": "Click champions below to add them to your pool",
+    "searchPlaceholder": "Search champion...",
+    "removeHint": "Remove {name}"
+  },
+  "rank": {
+    "label": "Rank:",
+    "all": "All Ranks",
+    "range": "Range",
+    "individual": "Individual"
+  },
+  "roles": {
+    "all": "All",
+    "top": "Top",
+    "jungle": "Jungle",
+    "mid": "Mid",
+    "bottom": "Bottom",
+    "support": "Support"
+  }
+}
