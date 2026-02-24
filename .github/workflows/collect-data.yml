@@ -96,15 +96,13 @@ jobs:
       - name: Master+
         run: npx tsx src/scripts/collect-data.ts --apex --matches $MATCHES
 
-      # ── WAL チェックポイント → コミット ────────────────────────────────────
-      - name: Checkpoint WAL
+      # ── WAL チェックポイント + DELETE モード変換 → コミット ──────────────────
+      # Vercel のファイルシステムは読み取り専用のため WAL モードの DB を開けない。
+      # コミット前に WAL を完全にフラッシュし、journal_mode を DELETE に戻しておく。
+      - name: Checkpoint WAL and switch to DELETE mode
         run: |
-          if [ -f data/matchups.db-wal ]; then
-            sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE);'
-            echo "WAL checkpointed"
-          else
-            echo "No WAL file"
-          fi
+          sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;'
+          echo "WAL checkpointed and journal mode set to DELETE"
 
       - name: Commit updated database
         run: |

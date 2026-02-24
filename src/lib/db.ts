@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import fs from 'fs';
 import path from 'path';
 import { MatchupData, RankTier, Role, expandRankTier } from './types';
 
@@ -10,8 +11,16 @@ export function getDb(): Database.Database {
 	if (!db) {
 		const isVercel = process.env.VERCEL === '1';
 		if (isVercel) {
-			// Vercel filesystem is read-only — open in readonly mode, skip WAL/init
-			db = new Database(DB_PATH, { readonly: true });
+			// Vercel のファイルシステムは読み取り専用。
+			// WAL モードの DB を readonly で開くと .db-shm ファイルの作成が必要になるが
+			// 読み取り専用 FS では作成できず SQLITE_CANTOPEN になる。
+			// /tmp は書き込み可能なので DB をコピーして開く。
+			// SQLite は /tmp 以下に .db-shm を作成できるため WAL モードでも動作する。
+			const TMP_DB_PATH = '/tmp/matchups.db';
+			if (!fs.existsSync(TMP_DB_PATH)) {
+				fs.copyFileSync(DB_PATH, TMP_DB_PATH);
+			}
+			db = new Database(TMP_DB_PATH, { readonly: true });
 		} else {
 			db = new Database(DB_PATH);
 			db.pragma('journal_mode = WAL');
