@@ -33,8 +33,8 @@ export default function MatchupPage() {
 
 	const [role, setRole] = useState<Role>(initialRole);
 	const [rank, setRank] = useState<RankTier>(initialRank);
-	// null = パッチ一覧ロード中（fetchMatchups を待機）、'' = 全パッチ、'15.x' = 特定パッチ
-	const [patch, setPatch] = useState<string | null>(null);
+	// '' = 全パッチ、'16.x' = 特定パッチ（初期値は '' で即座に全データ表示）
+	const [patch, setPatch] = useState<string>('');
 	const [patches, setPatches] = useState<PatchInfo[]>([]);
 	const [poolFilterActive, setPoolFilterActive] = useState(false);
 	const [champion, setChampion] = useState<Champion | null>(null);
@@ -56,18 +56,16 @@ export default function MatchupPage() {
 			.then(data => {
 				const patchList: PatchInfo[] = data.patches ?? [];
 				setPatches(patchList);
-				// 最新パッチ（DESC順の先頭）をデフォルト選択、なければ全パッチ
-				setPatch(patchList.length > 0 ? patchList[0].patch : '');
+				// 最新パッチ（DESC順の先頭）をデフォルト選択
+				if (patchList.length > 0) setPatch(patchList[0].patch);
 			})
 			.catch(err => {
 				console.error('Failed to fetch patches:', err);
-				setPatch(''); // フェッチ失敗時は全パッチ表示にフォールバック
+				// フェッチ失敗時は patch='' のまま（全パッチ表示）で続行
 			});
 	}, []);
 
 	const fetchMatchups = useCallback(async () => {
-		// patch が null の間はパッチ一覧のロード待ち → スキップ
-		if (patch === null) return;
 		setLoading(true);
 		setError(null);
 		try {
@@ -172,7 +170,7 @@ export default function MatchupPage() {
 					<RankSelector value={rank} onChange={setRank} />
 
 					{patches.length > 0 && (
-						<PatchSelector value={patch ?? ''} patches={patches} onChange={setPatch} />
+						<PatchSelector value={patch} patches={patches} onChange={setPatch} />
 					)}
 
 					<button
