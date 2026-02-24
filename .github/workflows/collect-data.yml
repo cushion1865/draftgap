@@ -33,18 +33,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ── サンプリング開始ページを決定 ──────────────────────────────────────
-      # 朝 (02:00 JST = 0 17 UTC): page 1  → 高LP帯（上位200名）
-      # 昼 (14:00 JST = 0 5 UTC):  page 5  → 中LP帯（各ディビジョンの中盤）
+      # ── サンプリング開始ページをランダムに決定 ────────────────────────────
+      # 1〜15 のランダムページを選択することで、毎回異なるLP帯をサンプリングし
+      # データの偏りを長期的に解消する。Master+ は --apex で別途毎回収集。
       - name: Set start page
         run: |
-          if [ "${{ github.event.schedule }}" = "0 5 * * *" ]; then
-            echo "START_PAGE=5" >> $GITHUB_ENV
-            echo "Afternoon run: sampling from page 5 (mid-LP players)"
-          else
-            echo "START_PAGE=1" >> $GITHUB_ENV
-            echo "Morning run: sampling from page 1 (high-LP players)"
-          fi
+          START_PAGE=$((RANDOM % 15 + 1))
+          echo "START_PAGE=$START_PAGE" >> $GITHUB_ENV
+          echo "Random start page: $START_PAGE (range 1-15)"
 
       # ── Silver ────────────────────────────────────────────────────────────
       - name: Silver I
