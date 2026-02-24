@@ -460,6 +460,17 @@ button {
   text-overflow: ellipsis;
 }
 
+.role-icon {
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.filter-btn.active .role-icon,
+.filter-btn:hover .role-icon {
+  opacity: 1;
+}
+
 .champion-card-role {
   position: absolute;
   top: 4px;

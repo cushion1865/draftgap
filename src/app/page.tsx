@@ -7,6 +7,7 @@ import { Champion, Role, RankTier, ROLES } from '@/lib/types';
 import { getChampionIconUrl, getDDragonVersionAsync } from '@/lib/data-dragon';
 import Header from '@/components/Header';
 import RankSelector from '@/components/RankSelector';
+import RoleIcon from '@/components/RoleIcon';
 
 // Role-to-tag mapping for filtering (approximate by Data Dragon tags)
 const ROLE_TAG_MAP: Record<string, string[]> = {
@@ -113,7 +114,7 @@ export default function HomePage() {
               className={`filter-btn ${selectedRole === r.value ? 'active' : ''}`}
               onClick={() => setSelectedRole(r.value)}
             >
-              {r.icon} {t(`roles.${r.value}`)}
+              <RoleIcon role={r.value} size={16} /> {t(`roles.${r.value}`)}
             </button>
           ))}
           <RankSelector value={selectedRank} onChange={setSelectedRank} />
@@ -143,7 +144,7 @@ export default function HomePage() {
                   />
                   <div className="champion-card-name">{champion.name}</div>
                   {selectedRole === 'all' && roleInfo && (
-                    <div className="champion-card-role">{roleInfo.icon} {t(`roles.${roleInfo.value}`)}</div>
+                    <div className="champion-card-role"><RoleIcon role={roleInfo.value} size={10} /> {t(`roles.${roleInfo.value}`)}</div>
                   )}
                 </div>
               );

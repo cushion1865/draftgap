@@ -8,6 +8,7 @@ import { getChampionIconUrl } from '@/lib/data-dragon';
 import { getPoolChampionIds } from '@/lib/champion-pool';
 import Header from '@/components/Header';
 import RankSelector from '@/components/RankSelector';
+import RoleIcon from '@/components/RoleIcon';
 
 function getWinRateColor(winRate: number): string {
 	if (winRate >= 0.53) return 'var(--win-high)';
@@ -109,7 +110,7 @@ export default function MatchupPage() {
 								className={`filter-btn ${role === r.value ? 'active' : ''}`}
 								onClick={() => setRole(r.value)}
 							>
-								{r.icon} {t(`roles.${r.value}`)}
+								<RoleIcon role={r.value} size={16} /> {t(`roles.${r.value}`)}
 							</button>
 						))}
 					</div>
