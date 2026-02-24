@@ -19,10 +19,7 @@ export async function GET(request: NextRequest) {
 
 	let query = supabase
 		.from('matchup_tips')
-		.select(`
-			id, content, likes_count, saves_count, created_at,
-			profiles(username)
-		`)
+		.select('id, content, likes_count, saves_count, created_at, user_id')
 		.eq('champion_id', champion)
 		.eq('opponent_id', opponent);
 
@@ -35,10 +32,22 @@ export async function GET(request: NextRequest) {
 	const { data: tips, error } = await query.limit(50);
 	if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+	// user_id からユーザー名を一括取得
+	const userIds = [...new Set((tips ?? []).map((t: any) => t.user_id))];
+	const usernameMap: Record<string, string> = {};
+	if (userIds.length > 0) {
+		const { data: profilesData } = await supabase
+			.from('profiles')
+			.select('id, username')
+			.in('id', userIds);
+		for (const p of profilesData ?? []) {
+			usernameMap[p.id] = p.username;
+		}
+	}
+
 	// ログイン中なら自分のいいね・保存状態を付与
 	let likedIds = new Set<string>();
 	let savedIds = new Set<string>();
-	let savedTipIds = new Set<string>();
 
 	if (user) {
 		const tipIds = (tips ?? []).map((t: any) => t.id);
@@ -48,18 +57,6 @@ export async function GET(request: NextRequest) {
 		]);
 		likedIds = new Set(likesRes.data?.map((r: any) => r.tip_id) ?? []);
 		savedIds = new Set(savesRes.data?.map((r: any) => r.tip_id) ?? []);
-
-		// 保存済みフィルター用に全保存を取得
-		if (savedOnly) {
-			const { data: allSaves } = await supabase
-				.from('tip_saves')
-				.select('tip_id')
-				.eq('user_id', user.id)
-				.eq('champion_id', champion)
-				.eq('opponent_id', opponent);
-			// tip_savesにchampion_id/opponent_idがないため、tip_idで絞る
-			savedTipIds = new Set(savesRes.data?.map((r: any) => r.tip_id) ?? []);
-		}
 	}
 
 	let result = (tips ?? []).map((tip: any) => ({
@@ -68,7 +65,7 @@ export async function GET(request: NextRequest) {
 		likesCount: tip.likes_count,
 		savesCount: tip.saves_count,
 		createdAt: tip.created_at,
-		username: tip.profiles?.username ?? '???',
+		username: usernameMap[tip.user_id] ?? '???',
 		isLiked: likedIds.has(tip.id),
 		isSaved: savedIds.has(tip.id),
 		isOwn: tip.user_id === user?.id,
@@ -94,10 +91,17 @@ export async function POST(request: NextRequest) {
 	const { data, error } = await supabase
 		.from('matchup_tips')
 		.insert({ user_id: user.id, champion_id, opponent_id, content })
-		.select(`id, content, likes_count, saves_count, created_at, profiles(username)`)
+		.select('id, content, likes_count, saves_count, created_at')
 		.single();
 
 	if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+	// 投稿者のusernameを取得
+	const { data: profile } = await supabase
+		.from('profiles')
+		.select('username')
+		.eq('id', user.id)
+		.maybeSingle();
 
 	return NextResponse.json({
 		tip: {
@@ -106,7 +110,7 @@ export async function POST(request: NextRequest) {
 			likesCount: data.likes_count,
 			savesCount: data.saves_count,
 			createdAt: data.created_at,
-			username: (data.profiles as any)?.username ?? '???',
+			username: profile?.username ?? '???',
 			isLiked: false,
 			isSaved: false,
 			isOwn: true,
