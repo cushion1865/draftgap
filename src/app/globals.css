@@ -2,29 +2,35 @@
 
 :root {
   /* Colors - Dark Theme */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.8);
-  --bg-card-hover: rgba(31, 41, 55, 0.9);
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --bg-glass-hover: rgba(255, 255, 255, 0.1);
+  --bg-primary: #070b18;
+  --bg-secondary: #0e1525;
+  --bg-card: rgba(11, 17, 32, 0.88);
+  --bg-card-hover: rgba(20, 28, 48, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --bg-glass-hover: rgba(255, 255, 255, 0.08);
 
-  /* Accent Colors - Gold/Blue */
+  /* Accent Colors - Gold/Blue/Purple */
   --accent-gold: #c8aa6e;
   --accent-gold-light: #f0e6d2;
   --accent-blue: #0ac8b9;
   --accent-blue-dark: #005a82;
-  --accent-purple: #6366f1;
-  
+  --accent-purple: #7c6af0;
+  --accent-purple-dim: rgba(124, 106, 240, 0.15);
+
   /* Gradient */
   --gradient-gold: linear-gradient(135deg, #c8aa6e 0%, #f0e6d2 100%);
   --gradient-blue: linear-gradient(135deg, #0ac8b9 0%, #005a82 100%);
-  --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #1a1a3e 50%, #0a0e1a 100%);
+  --gradient-hero: linear-gradient(135deg, #070b18 0%, #13163a 50%, #070b18 100%);
 
   /* Win rate colors */
   --win-high: #22c55e;
   --win-mid: #eab308;
   --win-low: #ef4444;
+
+  /* Win rate gradients */
+  --win-high-gradient: linear-gradient(90deg, #15803d, #22c55e);
+  --win-mid-gradient: linear-gradient(90deg, #a16207, #eab308);
+  --win-low-gradient: linear-gradient(90deg, #b91c1c, #ef4444);
 
   /* Text */
   --text-primary: #f0e6d2;
@@ -32,12 +38,14 @@
   --text-muted: #5b5a56;
 
   /* Borders */
-  --border-subtle: rgba(200, 170, 110, 0.15);
-  --border-accent: rgba(200, 170, 110, 0.3);
+  --border-subtle: rgba(200, 170, 110, 0.12);
+  --border-accent: rgba(200, 170, 110, 0.28);
+  --border-glass: rgba(255, 255, 255, 0.07);
 
   /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 20px rgba(10, 200, 185, 0.15);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 24px rgba(10, 200, 185, 0.18);
+  --shadow-glow-gold: 0 0 28px rgba(200, 170, 110, 0.22);
 
   /* Spacing */
   --header-height: 64px;
@@ -66,6 +74,10 @@ html {
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgba(124, 106, 240, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(10, 200, 185, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -202,6 +214,7 @@ button {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 24px rgba(200, 170, 110, 0.3));
 }
 
 .hero p {
@@ -413,15 +426,30 @@ button {
   overflow: hidden;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   background: var(--bg-card);
 }
 
+.champion-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(200, 170, 110, 0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 1;
+  pointer-events: none;
+}
+
 .champion-card:hover {
-  transform: scale(1.08);
+  transform: translateY(-4px) scale(1.06);
   border-color: var(--accent-gold);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), var(--shadow-glow-gold);
   z-index: 2;
+}
+
+.champion-card:hover::before {
+  opacity: 1;
 }
 
 .champion-card.in-pool {
@@ -601,13 +629,15 @@ button {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
   cursor: default;
+  backdrop-filter: blur(8px);
 }
 
 .matchup-row:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-accent);
+  transform: translateX(2px);
 }
 
 .matchup-row.pool-highlight {
@@ -702,10 +732,12 @@ button {
   gap: 8px;
   padding: 16px;
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   margin-bottom: 24px;
   min-height: 60px;
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .pool-selected-grid:empty::before {
@@ -739,6 +771,35 @@ button {
   width: 28px;
   height: 28px;
   border-radius: 50%;
+}
+
+/* ===== EXTERNAL LINKS ===== */
+.matchup-external-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.external-link:hover {
+  color: var(--accent-gold);
+  border-color: var(--border-accent);
+  background: rgba(200, 170, 110, 0.08);
 }
 
 /* ===== INLINE LINK (used in empty states) ===== */

@@ -11,9 +11,9 @@ import RankSelector from '@/components/RankSelector';
 import RoleIcon from '@/components/RoleIcon';
 
 function getWinRateColor(winRate: number): string {
-	if (winRate >= 0.53) return 'var(--win-high)';
-	if (winRate >= 0.47) return 'var(--win-mid)';
-	return 'var(--win-low)';
+	if (winRate >= 0.53) return 'var(--win-high-gradient)';
+	if (winRate >= 0.47) return 'var(--win-mid-gradient)';
+	return 'var(--win-low-gradient)';
 }
 
 export default function MatchupPage() {
@@ -97,6 +97,24 @@ export default function MatchupPage() {
 							<p className="matchup-subtitle">
 								{t('matchup.subtitle', { name: champion.name, role: t(`roles.${role}`) })}
 							</p>
+							<div className="matchup-external-links">
+								<a
+									href={`https://www.op.gg/champions/${champion.name.toLowerCase().replace(/[\s'.]/g, '')}/counters`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="external-link"
+								>
+									↗ OP.GG
+								</a>
+								<a
+									href={`https://u.gg/lol/champions/${champion.name.toLowerCase().replace(/[\s'.]/g, '')}/counter`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="external-link"
+								>
+									↗ U.GG
+								</a>
+							</div>
 						</div>
 					</div>
 				)}
