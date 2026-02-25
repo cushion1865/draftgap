@@ -60,18 +60,6 @@ async function collectData() {
 		process.exit(1);
 	}
 
-	// Validate API key by testing league-v4 endpoint
-	console.log('🔑 Validating API key...');
-	const testEntries = await getLeagueEntries('GOLD', 'I', 1);
-	if (testEntries.length === 0) {
-		console.error('❌ API key appears to be invalid or expired.');
-		console.error('   Regenerate at: https://developer.riotgames.com/');
-		console.error('   Then update RIOT_API_KEY in .env.local');
-		process.exit(1);
-	}
-	console.log('✅ API key is valid (league-v4 returned ' + testEntries.length + ' entries)');
-	console.log('');
-
 	// Ensure DB is initialized
 	getDb();
 
@@ -90,7 +78,7 @@ async function collectData() {
 		return champNormMap.get(name.toLowerCase()) ?? name;
 	}
 
-	// Step 1: Get player list (reuse the entries we already fetched for validation)
+	// Step 1: Get player list (first fetch also validates the API key)
 	console.log(`📋 Fetching players: ${IS_APEX ? 'Master+' : `${TIER} ${DIVISION}`}`);
 	let entries: LeagueEntry[] = [];
 
@@ -111,8 +99,9 @@ async function collectData() {
 	}
 
 	if (entries.length === 0) {
-		console.log('⚠️ No players found. Check your tier/division settings.');
-		return;
+		console.error('❌ No players found. API key may be expired or invalid.');
+		console.error('   Regenerate at: https://developer.riotgames.com/');
+		process.exit(1);
 	}
 
 	console.log(`✅ Total players: ${entries.length}`);
