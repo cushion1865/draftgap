@@ -23,7 +23,7 @@ import {
 } from '../lib/riot-api';
 
 import { upsertMatchup, isMatchProcessed, markMatchProcessed, getDb } from '../lib/db';
-import { fetchAllChampions } from '../lib/data-dragon';
+import { fetchAllChampions, getDDragonVersionAsync } from '../lib/data-dragon';
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -72,6 +72,12 @@ async function collectData() {
 		champNormMap.set(champ.id.toLowerCase(), champ.id);
 	}
 	console.log(`✅ Loaded ${champNormMap.size} champion IDs`);
+
+	// DDragon バージョンから最新パッチを取得（fetchAllChampions がキャッシュ済みなので追加リクエストなし）
+	const ddVersion = await getDDragonVersionAsync();
+	const [ddMajor, ddMinor] = ddVersion.split('.');
+	const latestPatch = `${ddMajor}.${ddMinor}`;
+	console.log(`🎮 Targeting patch: ${latestPatch} (DDragon ${ddVersion})`);
 	console.log('');
 
 	function normalizeChampId(name: string): string {
@@ -113,6 +119,7 @@ async function collectData() {
 	let totalMatchupsRecorded = 0;
 	let skippedDuplicates = 0;
 	let skippedNoPuuid = 0;
+	let skippedOldPatch = 0;
 
 	for (let i = 0; i < entries.length; i++) {
 		const entry = entries[i];
@@ -151,6 +158,13 @@ async function collectData() {
 			// Extract patch from gameVersion (e.g., "15.3.123.456" → "15.3")
 			const versionParts = match.info.gameVersion.split('.');
 			const patch = `${versionParts[0]}.${versionParts[1]}`;
+
+			// 最新パッチ以外はスキップ（processed_matches には記録して再フェッチを防ぐ）
+			if (patch !== latestPatch) {
+				markMatchProcessed(matchId);
+				skippedOldPatch++;
+				continue;
+			}
 
 			// Determine rank tier for this data
 			const rankTier = (IS_APEX
@@ -192,6 +206,7 @@ async function collectData() {
 	console.log(`   Missing PUUID:       ${skippedNoPuuid}`);
 	console.log(`   Matches processed:   ${totalMatchesProcessed}`);
 	console.log(`   Duplicate skipped:   ${skippedDuplicates}`);
+	console.log(`   Old patch skipped:   ${skippedOldPatch}`);
 	console.log(`   Matchups recorded:   ${totalMatchupsRecorded}`);
 	console.log('═══════════════════════════════════════════════');
 	console.log('');
