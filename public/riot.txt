@@ -1,3 +1,1 @@
-# This file is used for Riot Games Developer Portal domain verification.
-# After submitting the Production Key application, replace this content
-# with the verification token provided by the Riot Developer Portal.
+9ddf7485-2944-4992-8d67-f25163549517
