@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "RiftEdge - LoL Pick Assistant",
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout>
+          {children}
+          <Footer />
+        </ClientLayout>
       </body>
     </html>
   );

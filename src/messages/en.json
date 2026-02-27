@@ -76,6 +76,9 @@
     "loginLink": "Login",
     "signupLink": "Sign Up"
   },
+  "footer": {
+    "privacy": "Privacy Policy"
+  },
   "tips": {
     "pageTitle": "Community Tips",
     "placeholder": "Share your matchup tips (10–500 characters)...",

@@ -76,6 +76,9 @@
     "loginLink": "ログイン",
     "signupLink": "新規登録"
   },
+  "footer": {
+    "privacy": "プライバシーポリシー"
+  },
   "tips": {
     "pageTitle": "コミュニティTips",
     "placeholder": "このマッチアップのTipsを共有しましょう（10〜500文字）...",
