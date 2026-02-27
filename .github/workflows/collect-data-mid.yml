@@ -1,0 +1,100 @@
+name: Collect Matchup Data — Mid Tiers (Gold / Platinum / Emerald)
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # 毎日 10:00 JST
+  workflow_dispatch:
+
+concurrency:
+  group: draftgap-collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+
+    permissions:
+      contents: write
+
+    env:
+      RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+      RIOT_REGION: jp1
+      RIOT_ROUTING: asia
+      MATCHES: 20
+      PAGES: 1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set start page
+        run: |
+          START_PAGE=$((RANDOM % 15 + 1))
+          echo "START_PAGE=$START_PAGE" >> $GITHUB_ENV
+          echo "Random start page: $START_PAGE (range 1-15)"
+
+      - name: Setup git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # ── Gold ──────────────────────────────────────────────────────────────
+      - name: Gold I
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Gold II
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Gold III
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Gold IV
+        run: npx tsx src/scripts/collect-data.ts --tier GOLD --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+
+      - name: Commit Gold data
+        run: |
+          sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;'
+          git add data/matchups.db
+          git diff --staged --quiet && echo "No changes to commit" || \
+            (git commit -m "chore: update matchups (gold) [$(date -u '+%Y-%m-%d %H:%M UTC')]" && git push)
+
+      # ── Platinum ──────────────────────────────────────────────────────────
+      - name: Platinum I
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Platinum II
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Platinum III
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Platinum IV
+        run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+
+      - name: Commit Platinum data
+        run: |
+          sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;'
+          git add data/matchups.db
+          git diff --staged --quiet && echo "No changes to commit" || \
+            (git commit -m "chore: update matchups (platinum) [$(date -u '+%Y-%m-%d %H:%M UTC')]" && git push)
+
+      # ── Emerald ───────────────────────────────────────────────────────────
+      - name: Emerald I
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Emerald II
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Emerald III
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+      - name: Emerald IV
+        run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
+
+      - name: Commit Emerald data
+        run: |
+          sqlite3 data/matchups.db 'PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;'
+          git add data/matchups.db
+          git diff --staged --quiet && echo "No changes to commit" || \
+            (git commit -m "chore: update matchups (emerald) [$(date -u '+%Y-%m-%d %H:%M UTC')]" && git push)
