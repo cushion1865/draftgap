@@ -70,14 +70,32 @@
     "signOut": "ログアウト",
     "googleLogin": "Googleでログイン",
     "googleSignup": "Googleで登録",
+    "riotLogin": "Riotでログイン",
+    "riotSignup": "Riotで登録",
+    "riotComingSoon": "近日公開",
     "or": "または",
     "noAccount": "アカウントをお持ちでない方は",
     "hasAccount": "すでにアカウントをお持ちの方は",
     "loginLink": "ログイン",
     "signupLink": "新規登録"
   },
+  "account": {
+    "title": "アカウント設定",
+    "loginRequired": "アカウント設定を確認するにはログインしてください。",
+    "usernameLabel": "ユーザー名",
+    "riotIdLabel": "Riot ID",
+    "noRiotId": "未連携",
+    "linkBtn": "Riotアカウントを連携",
+    "unlinkBtn": "連携解除",
+    "unlinkConfirm": "Riotアカウントの連携を解除しますか？",
+    "linkSuccess": "Riotアカウントを連携しました。",
+    "linkError": "Riotアカウントの連携に失敗しました。もう一度お試しください。",
+    "unlinkSuccess": "Riotアカウントの連携を解除しました。",
+    "unlinkError": "連携解除に失敗しました。もう一度お試しください。"
+  },
   "footer": {
-    "privacy": "プライバシーポリシー"
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約"
   },
   "tips": {
     "pageTitle": "コミュニティTips",

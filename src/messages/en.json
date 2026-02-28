@@ -70,14 +70,32 @@
     "signOut": "Sign Out",
     "googleLogin": "Continue with Google",
     "googleSignup": "Sign up with Google",
+    "riotLogin": "Continue with Riot",
+    "riotSignup": "Sign up with Riot",
+    "riotComingSoon": "Coming Soon",
     "or": "or",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "loginLink": "Login",
     "signupLink": "Sign Up"
   },
+  "account": {
+    "title": "Account Settings",
+    "loginRequired": "Please login to view account settings.",
+    "usernameLabel": "Username",
+    "riotIdLabel": "Riot ID",
+    "noRiotId": "Not linked",
+    "linkBtn": "Link Riot Account",
+    "unlinkBtn": "Unlink",
+    "unlinkConfirm": "Unlink your Riot account?",
+    "linkSuccess": "Riot account linked successfully.",
+    "linkError": "Failed to link Riot account. Please try again.",
+    "unlinkSuccess": "Riot account unlinked.",
+    "unlinkError": "Failed to unlink. Please try again."
+  },
   "footer": {
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "tips": {
     "pageTitle": "Community Tips",

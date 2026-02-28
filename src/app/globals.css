@@ -1964,6 +1964,11 @@ button {
   color: var(--text-primary);
 }
 
+.footer-link-sep {
+  margin: 0 8px;
+  color: var(--text-muted);
+}
+
 /* ── Privacy Page ───────────────────────────────────────────────────────── */
 
 .privacy-page {
@@ -2043,4 +2048,158 @@ button {
 
 .privacy-back a:hover {
   color: var(--text-primary);
+}
+
+/* ── RSO / Riot ボタン ── */
+.auth-riot-btn {
+  margin-top: 10px;
+  border-color: rgba(200, 60, 60, 0.3);
+}
+
+.auth-riot-btn:hover:not(:disabled) {
+  border-color: rgba(200, 60, 60, 0.6);
+  background: rgba(200, 60, 60, 0.08);
+}
+
+.auth-riot-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.auth-coming-soon {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: 4px;
+}
+
+/* ── TipCard Riot バッジ ── */
+.tip-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tip-riot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  background: rgba(200, 170, 110, 0.1);
+  border: 1px solid rgba(200, 170, 110, 0.25);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.tip-riot-badge-icon {
+  font-size: 0.68rem;
+}
+
+/* ── Account ページ ── */
+.account-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.account-section:last-of-type {
+  border-bottom: none;
+}
+
+.account-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.account-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.account-value-muted {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.account-riot-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+.riot-badge-icon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.account-unlink-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-md);
+  color: #ef4444;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.account-unlink-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+.account-unlink-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-message {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 16px;
+}
+
+.account-message-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.account-message-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.header-username {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.header-username:hover {
+  color: var(--accent-gold);
 }
