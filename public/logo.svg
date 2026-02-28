@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 275 275" width="275" height="275">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1A2744"/>
+      <stop offset="100%" stop-color="#050A14"/>
+    </radialGradient>
+    <linearGradient id="swordGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E8C46A"/>
+      <stop offset="50%" stop-color="#C89B3C"/>
+      <stop offset="100%" stop-color="#A07828"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="137.5" cy="137.5" r="132" fill="url(#bgGrad)"/>
+  <circle cx="137.5" cy="137.5" r="132" fill="none" stroke="#C89B3C" stroke-width="2.5" opacity="0.7"/>
+
+  <!-- Inner border ring -->
+  <circle cx="137.5" cy="137.5" r="124" fill="none" stroke="#C89B3C" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- Sword blade -->
+  <polygon
+    points="137.5,42 143,60 143,172 137.5,185 132,172 132,60"
+    fill="url(#swordGrad)"
+  />
+
+  <!-- Sword tip (sharp) -->
+  <polygon points="132,62 143,62 137.5,40" fill="#E8C46A"/>
+
+  <!-- Crossguard -->
+  <rect x="97" y="163" width="81" height="9" rx="4.5" fill="url(#swordGrad)"/>
+
+  <!-- Crossguard gem (center) -->
+  <circle cx="137.5" cy="167.5" r="5.5" fill="#4A90D9"/>
+  <circle cx="137.5" cy="167.5" r="3" fill="#7BB8F0"/>
+
+  <!-- Grip -->
+  <rect x="133" y="172" width="9" height="28" rx="3" fill="#8B6914"/>
+  <rect x="134.5" y="177" width="6" height="3" rx="1" fill="#C89B3C" opacity="0.5"/>
+  <rect x="134.5" y="184" width="6" height="3" rx="1" fill="#C89B3C" opacity="0.5"/>
+  <rect x="134.5" y="191" width="6" height="3" rx="1" fill="#C89B3C" opacity="0.5"/>
+
+  <!-- Pommel -->
+  <ellipse cx="137.5" cy="202" rx="10" ry="7" fill="url(#swordGrad)"/>
+  <ellipse cx="137.5" cy="200" rx="5" ry="3.5" fill="#E8C46A" opacity="0.6"/>
+
+  <!-- Left wing -->
+  <path d="M132 100 Q105 92 88 70 Q100 88 97 110 Q110 102 132 108 Z"
+    fill="#4A90D9" opacity="0.75"/>
+
+  <!-- Right wing -->
+  <path d="M143 100 Q170 92 187 70 Q175 88 178 110 Q165 102 143 108 Z"
+    fill="#4A90D9" opacity="0.75"/>
+
+  <!-- Corner diamonds (decorative) -->
+  <polygon points="137.5,56 140,62 137.5,68 135,62" fill="#E8C46A" opacity="0.4"/>
+
+  <!-- Text -->
+  <text
+    x="137.5"
+    y="238"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="18"
+    font-weight="700"
+    fill="#C89B3C"
+    text-anchor="middle"
+    letter-spacing="4"
+  >RIFTEDGE</text>
+
+  <!-- Subtitle dots -->
+  <circle cx="80" cy="234" r="1.5" fill="#C89B3C" opacity="0.5"/>
+  <circle cx="195" cy="234" r="1.5" fill="#C89B3C" opacity="0.5"/>
+</svg>
