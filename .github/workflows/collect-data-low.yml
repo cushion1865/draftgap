@@ -21,7 +21,7 @@ jobs:
       RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
       RIOT_REGION: jp1
       RIOT_ROUTING: asia
-      MATCHES: 20
+      MATCHES: 5
       PAGES: 1
 
     steps:
@@ -50,12 +50,20 @@ jobs:
 
       # ── Iron ──────────────────────────────────────────────────────────────
       - name: Iron I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier IRON --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Iron II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier IRON --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Iron III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier IRON --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Iron IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier IRON --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Iron data
@@ -67,12 +75,20 @@ jobs:
 
       # ── Bronze ────────────────────────────────────────────────────────────
       - name: Bronze I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier BRONZE --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Bronze II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier BRONZE --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Bronze III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier BRONZE --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Bronze IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier BRONZE --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Bronze data
@@ -84,12 +100,20 @@ jobs:
 
       # ── Silver ────────────────────────────────────────────────────────────
       - name: Silver I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier SILVER --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Silver II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier SILVER --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Silver III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier SILVER --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Silver IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier SILVER --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Silver data

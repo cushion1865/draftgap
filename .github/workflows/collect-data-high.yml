@@ -21,7 +21,7 @@ jobs:
       RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
       RIOT_REGION: jp1
       RIOT_ROUTING: asia
-      MATCHES: 20
+      MATCHES: 5
       PAGES: 1
 
     steps:
@@ -50,12 +50,20 @@ jobs:
 
       # ── Diamond ───────────────────────────────────────────────────────────
       - name: Diamond I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Diamond II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Diamond III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Diamond IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier DIAMOND --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Diamond data
@@ -67,6 +75,8 @@ jobs:
 
       # ── Master / Grandmaster / Challenger ─────────────────────────────────
       - name: Master+
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --apex --matches $MATCHES
 
       - name: Commit Master+ data

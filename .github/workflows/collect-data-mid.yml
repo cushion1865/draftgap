@@ -21,7 +21,7 @@ jobs:
       RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
       RIOT_REGION: jp1
       RIOT_ROUTING: asia
-      MATCHES: 20
+      MATCHES: 5
       PAGES: 1
 
     steps:
@@ -50,12 +50,20 @@ jobs:
 
       # ── Gold ──────────────────────────────────────────────────────────────
       - name: Gold I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier GOLD --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Gold II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier GOLD --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Gold III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier GOLD --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Gold IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier GOLD --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Gold data
@@ -67,12 +75,20 @@ jobs:
 
       # ── Platinum ──────────────────────────────────────────────────────────
       - name: Platinum I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Platinum II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Platinum III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Platinum IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier PLATINUM --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Platinum data
@@ -84,12 +100,20 @@ jobs:
 
       # ── Emerald ───────────────────────────────────────────────────────────
       - name: Emerald I
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division I --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Emerald II
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division II --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Emerald III
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division III --pages $PAGES --start-page $START_PAGE --matches $MATCHES
       - name: Emerald IV
+        timeout-minutes: 30
+        continue-on-error: true
         run: npx tsx src/scripts/collect-data.ts --tier EMERALD --division IV --pages $PAGES --start-page $START_PAGE --matches $MATCHES
 
       - name: Commit Emerald data
