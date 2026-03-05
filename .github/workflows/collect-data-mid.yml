@@ -21,7 +21,7 @@ jobs:
       RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
       RIOT_REGION: jp1
       RIOT_ROUTING: asia
-      MATCHES: 5
+      MATCHES: 2
       PAGES: 1
 
     steps:
